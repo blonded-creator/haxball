@@ -609,7 +609,7 @@ function loop() {
 //Limpando o canvas para  atualizar a posição do jogador
 ctx.clearRect(0, 0, 900, 500);
 
-//Chamando as funções para desenhar o campo, o jogador e a bola
+//Chamando as funções para desenhar tudo
 drawCampo();
 drawJogador(jogador);
 drawJogador(bot);
@@ -619,7 +619,7 @@ atualizarCronometro();
 drawCronometro(tempoRestante);
 }
 
-//Chama o loop para atualizar a posição do jogador
+//Chama o loop para executar tudo
 loop(); 
 
 
