@@ -161,23 +161,6 @@ function drawCronometro(tempoRestante){
     ctx.fillText(tempoFormatado, 800, 40);
 }
 
-//Função que atualiza o cronômetro
-function atualizarCronometro(){
-    if(partidaEncerrada){
-        return;
-    }
-    let tempoAtual = Date.now();
-    let tempoDecorrido = Math.floor((tempoAtual - tempoInicio) / 1000);
-    tempoRestante = 120 - tempoDecorrido;
-
-    if(tempoRestante <= 0){
-        tempoRestante = 0;
-        partidaEncerrada = true;
-        alert("O tempo acabou! Placar final: " + placarVermelho + " - " + placarAzul);
-        reiniciarPartida();
-    }
-}
-
 //Função para reiniciar partida após tempo encerrado
 function reiniciarPartida(){
     if(partidaEncerrada){
@@ -198,6 +181,23 @@ function reiniciarPartida(){
         tempoRestante = 120;
         tempoInicio = Date.now();
         partidaEncerrada = false;
+    }
+}
+
+//Função que atualiza o cronômetro
+function atualizarCronometro(){
+    if(partidaEncerrada){
+        return;
+    }
+    let tempoAtual = Date.now();
+    let tempoDecorrido = Math.floor((tempoAtual - tempoInicio) / 1000);
+    tempoRestante = 120 - tempoDecorrido;
+
+    if(tempoRestante <= 0){
+        tempoRestante = 0;
+        partidaEncerrada = true;
+        alert("O tempo acabou! Placar final: " + placarVermelho + " - " + placarAzul);
+        reiniciarPartida();
     }
 }
 
@@ -288,20 +288,6 @@ document.addEventListener("keyup", function(event){
         teclas.x = false;
         break;
     }
-});
-
-//Função que desativa todas as teclas quando o usuário sai da aba do jogo
-window.addEventListener("blur", function(){
-    teclas.w = false;
-    teclas.s = false;
-    teclas.a = false;
-    teclas.d = false;
-    teclas.ArrowUp = false;
-    teclas.ArrowDown = false;
-    teclas.ArrowLeft = false;
-    teclas.ArrowRight = false;
-    teclas.space = false;
-    teclas.x = false;
 });
 
 //Loop para verificar (verificar teclas, atualizar jogador, limpar canvas...)
