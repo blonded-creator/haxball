@@ -128,6 +128,9 @@ let partidaEncerrada = false;
 //Definindo ataque do bot
 let botAtacando = false;
 
+//Definindo para o jogo iniciar assim que mexer em qualquer tecla funcionável
+let partidaIniciar = false;
+
 //Desenhando bola
 function drawBola(bola) {
     ctx.beginPath();
@@ -221,27 +224,35 @@ document.addEventListener("keydown", function(event){
     switch(event.key) {         
         case "w":    
         teclas.w = true;
+        partidaIniciar = true;
         break;         
         case "s":      
         teclas.s = true;
+        partidaIniciar = true;
         break;         
         case "a":            
         teclas.a = true;
+        partidaIniciar = true;
         break;         
         case "d": 
         teclas.d = true;  
+        partidaIniciar = true;
         break;  
         case "ArrowUp":
         teclas.ArrowUp = true;
+        partidaIniciar = true;
         break;
         case "ArrowDown": 
         teclas.ArrowDown = true;
+        partidaIniciar = true;
         break;
         case "ArrowLeft":
         teclas.ArrowLeft = true;
+        partidaIniciar = true;
         break;
         case "ArrowRight":
         teclas.ArrowRight = true;
+        partidaIniciar = true;
         break;   
         case " ": 
         teclas.space = true;
@@ -319,6 +330,7 @@ function loop() {
         jogador.vx += 1;
     }
 
+  
     //Fórmulas: Math.max() = Retorna o maior valor entre os valores passados como parâmetro. Math.min() = Retorna o menor valor entre os valores passados como parâmetro. Math.sqrt = Retorna a raiz quadrada de um número. Math.atan2() = Descobe o ângulo e direção. Math.cos() = Converte o ângulo para coordenada x. Math.sin() = Converte o ângulo para coordenada y.
 
     //Limitando a velocidade do jogador
@@ -340,9 +352,23 @@ function loop() {
 
     //Implementando a IA do bot
     //Exemplo: O bot segue a bola e tenta chutar o gol esquerdo
-    if(bola.x > 450 || botAtacando){
+    if(partidaIniciar == true || botAtacando){
     let alvoX = bola.x + 30;
+    //Bot se afasta do canto para corrigir bug dele prender a bola
+    if(alvoX > 850){
+        alvoX = 850;
+    }
+    if(alvoX < 50){
+        alvoX = 50;
+    }
+
     let alvoY = bola.y;
+    if(alvoY > 450){
+        alvoY = 450;
+    }
+    if(alvoY < 50){
+        alvoY = 50;
+    }
     let dxIABot = alvoX - bot.x;
     let dyIABot = alvoY - bot.y;
     let distanciaIABot = Math.sqrt(dxIABot * dxIABot + dyIABot * dyIABot);
@@ -418,6 +444,7 @@ function loop() {
         teclas.chute = false;
         placarAzul++;
         botAtacando = false;
+        partidaIniciar = false;
         alert("GOL DO TIME AZUL!");
     }
 
@@ -449,6 +476,7 @@ function loop() {
         teclas.chute = false;
         placarVermelho++;
         botAtacando = false;
+        partidaIniciar = false;
         alert("GOL DO TIME VERMELHO!");
     }
 
@@ -526,8 +554,11 @@ function loop() {
     if(distanciaBotBola < bot.raio + bola.raio){
     let distanciaSobrepostaBotBola = bot.raio + bola.raio - distanciaBotBola;
 
-    bola.x += Math.cos(anguloBotBola) * distanciaSobrepostaBotBola;
-    bola.y += Math.sin(anguloBotBola) * distanciaSobrepostaBotBola;
+    bola.x += Math.cos(anguloBotBola) * distanciaSobrepostaBotBola / 2;
+    bola.y += Math.sin(anguloBotBola) * distanciaSobrepostaBotBola / 2;
+
+    bot.x -= Math.cos(anguloBotBola) * distanciaSobrepostaBotBola / 2;
+    bot.y -= Math.sin(anguloBotBola) * distanciaSobrepostaBotBola / 2;
 
     //Considerando a velocidade da bola e do bot
     let velocidadeRelativa = (bola.vx - bot.vx) * Math.cos(anguloBotBola) + (bola.vy - bot.vy) * Math.sin(anguloBotBola);
