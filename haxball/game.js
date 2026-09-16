@@ -322,8 +322,8 @@ function loop() {
     //Fórmulas: Math.max() = Retorna o maior valor entre os valores passados como parâmetro. Math.min() = Retorna o menor valor entre os valores passados como parâmetro. Math.sqrt = Retorna a raiz quadrada de um número. Math.atan2() = Descobe o ângulo e direção. Math.cos() = Converte o ângulo para coordenada x. Math.sin() = Converte o ângulo para coordenada y.
 
     //Limitando a velocidade do jogador
-    jogador.vx = Math.max(-7, Math.min(7, jogador.vx));
-    jogador.vy = Math.max(-7, Math.min(7, jogador.vy));
+    jogador.vx = Math.max(-4, Math.min(4, jogador.vx));
+    jogador.vy = Math.max(-4, Math.min(4, jogador.vy));
 
     //Fazendo o jogador desacelerar quando não estiver pressionando as teclas
     if(!teclas.a && !teclas.d && !teclas.ArrowLeft && !teclas.ArrowRight){
@@ -348,12 +348,14 @@ function loop() {
     let distanciaIABot = Math.sqrt(dxIABot * dxIABot + dyIABot * dyIABot);
 
     if(distanciaIABot > 0){
+    //Ângulo
     let anguloIABot = Math.atan2(dyIABot, dxIABot);
-    bot.vx += Math.cos(anguloIABot) * 0.8;
-    bot.vy += Math.sin(anguloIABot) * 0.8;
+    //Transforma o ângulo em movimento
+    bot.vx += Math.cos(anguloIABot) * 1;
+    bot.vy += Math.sin(anguloIABot) * 1;
 
-    bot.vx = Math.max(-6, Math.min(6, bot.vx));
-    bot.vy = Math.max(-6, Math.min(6, bot.vy));
+    bot.vx = Math.max(-3, Math.min(3, bot.vx));
+    bot.vy = Math.max(-3, Math.min(3, bot.vy));
     }
 
     if(distanciaIABot < 50)
@@ -505,6 +507,8 @@ function loop() {
     if(distancia < bola.raio + jogador.raio){
     let força = forçaImpacto;
     let distanciaSobreposta = bola.raio + jogador.raio - distancia;
+
+    //Definindo velocidade da bola usando a velocidade do jogador como base
     jogador.x -= Math.cos(angulo) * distanciaSobreposta;
     jogador.y -= Math.sin(angulo) * distanciaSobreposta;
     bola.x += Math.cos(angulo) * distanciaSobreposta;
@@ -525,6 +529,7 @@ function loop() {
     bola.x += Math.cos(anguloBotBola) * distanciaSobrepostaBotBola;
     bola.y += Math.sin(anguloBotBola) * distanciaSobrepostaBotBola;
 
+    //Considerando a velocidade da bola e do bot
     let velocidadeRelativa = (bola.vx - bot.vx) * Math.cos(anguloBotBola) + (bola.vy - bot.vy) * Math.sin(anguloBotBola);
 
     if(velocidadeRelativa < 0){
